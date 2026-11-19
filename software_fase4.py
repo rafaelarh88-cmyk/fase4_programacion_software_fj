@@ -8,6 +8,7 @@
 # registro de eventos y errores en un archivo de logs.
 # =============================================================================
 
+import math  # rechazar valores no finitos en numeros positivos
 from abc import ABC, abstractmethod  # Importa las herramientas para crear clases abstractas.
 import logging  # Importa el módulo estándar para registrar eventos en archivos.
 
@@ -76,6 +77,10 @@ def validar_numero_positivo(valor, campo):
     if isinstance(valor, bool) or not isinstance(valor, (int, float)):
         raise DatosInvalidosError(f"El campo '{campo}' debe ser numérico.")  # Tipo incorrecto.
     # Verifica que el número sea mayor que cero.
+    if isinstance(valor, float) and not math.isfinite(valor):
+        raise DatosInvalidosError(
+            f"El campo '{campo}' debe ser un número finito."
+        ) # rechazar valores no finitos en numeros positivos
     if valor <= 0:
         raise DatosInvalidosError(f"El campo '{campo}' debe ser mayor que cero.")  # Valor fuera de rango.
     return valor  # Retorna el número validado.
